@@ -1,6 +1,6 @@
 
 "use client";
-
+import { Eye, EyeOff } from "lucide-react";
 import { useState} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -84,6 +85,8 @@ try {
               className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
               required
             />
+            
+
           </div>
 
           <div>
@@ -103,23 +106,38 @@ try {
             />
           </div>
 
-          <div>
-            <label htmlFor="password" className="mb-1.5 block text-sm font-medium">
-              পাসওয়ার্ড
-            </label>
+         <div>
+  <label
+    htmlFor="password"
+    className="mb-1.5 block text-sm font-medium"
+  >
+    পাসওয়ার্ড
+  </label>
 
-            <input
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              placeholder="কমপক্ষে ৮ অক্ষর"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={8}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
-              required
-            />
-          </div>
+  <div className="relative">
+    <input
+      id="password"
+      type={showPassword ? "text" : "password"}
+      autoComplete="new-password"
+      placeholder="কমপক্ষে ৮ অক্ষর"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      minLength={8}
+      className="w-full rounded-lg border border-gray-200 px-3 py-2.5 pr-11 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+      required
+    />
+
+    <button
+      type="button"
+      onClick={() => setShowPassword((prev) => !prev)}
+      aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+      aria-pressed={showPassword}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-green-700"
+    >
+      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+    </button>
+  </div>
+</div>
 
           {message && (
             <p
