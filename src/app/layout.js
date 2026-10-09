@@ -1,8 +1,7 @@
 import { Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-import Navlinks from "@/components/Navlinks";
-import Marquee from "@/components/Marquee";
+
 
 const noto = Noto_Serif_Bengali({
   variable: "--font-geist-sans",
