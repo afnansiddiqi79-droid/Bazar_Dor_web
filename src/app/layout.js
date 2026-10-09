@@ -1,7 +1,7 @@
 import { Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-
+import ToasterProvider from "@/components/ToasterProvider";
 
 const noto = Noto_Serif_Bengali({
   variable: "--font-geist-sans",
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
     >
     <body className="min-h-full flex flex-col">
   <Header />
-
+  <ToasterProvider />
   {children}
 </body>
     </html>

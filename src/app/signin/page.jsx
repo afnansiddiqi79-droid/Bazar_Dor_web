@@ -1,10 +1,11 @@
 
 "use client";
-
+import toast from "react-hot-toast";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import SocialLogin from "@/components/auth/SocialLogin";
 
 export default function SigninPage() {
   const router = useRouter();
@@ -18,26 +19,34 @@ export default function SigninPage() {
     setMessage("");
     setLoading(true);
 
-    try {
-      const { error } = await authClient.signIn.email({
-        email,
-        password,
-      });
+try {
+  const { error } = await authClient.signIn.email({
+    email,
+    password,
+  });
 
-      if (error) {
-        setMessage(error.message || "Login failed. আবার চেষ্টা করো।");
-        return;
-      }
+  if (error) {
+    const message =
+      error.message || "Login failed. আবার চেষ্টা করো।";
 
-      router.push("/");
-      router.refresh();
-    } catch {
-      setMessage("সমস্যা হয়েছে। আবার চেষ্টা করো।");
-    } finally {
-      setLoading(false);
-    }
+    setMessage(message);
+    toast.error(message);
+    return;
   }
 
+  toast.success("সফলভাবে লগইন হয়েছে!");
+
+  router.push("/");
+  router.refresh();
+} catch {
+  const message = "সমস্যা হয়েছে। আবার চেষ্টা করো।";
+
+  setMessage(message);
+  toast.error(message);
+} finally {
+  setLoading(false);
+}
+  }
   return (
     <main className="flex min-h-[65vh] items-center justify-center bg-[#f0f5f0] px-4 py-12">
       <section className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
@@ -95,8 +104,13 @@ export default function SigninPage() {
           >
             {loading ? "সাইন ইন হচ্ছে..." : "সাইন ইন"}
           </button>
-        </form>
 
+        </form>
+          <div className="my-4 text-center text-sm text-gray-500">
+     অথবা social account দিয়ে
+      </div>
+
+     <SocialLogin />
         <div className="my-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200" />
           <span className="text-xs text-gray-500">অথবা</span>

@@ -5,7 +5,8 @@ import { useState} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-
+import SocialLogin from "@/components/auth/SocialLogin";
+import toast from "react-hot-toast";
 export default function SignupPage() {
   const router = useRouter();
 
@@ -26,26 +27,34 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    try {
-      const { error } = await authClient.signUp.email({
-        name,
-        email,
-        password,
-      });
+    
+try {
+  const { error } = await authClient.signUp.email({
+    name,
+    email,
+    password,
+  });
 
-      if (error) {
-        setMessage(error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
-        return;
-      }
+  if (error) {
+    const message =
+      error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।";
 
-      router.push("/signin");
-    } catch {
-      setMessage("সমস্যা হয়েছে। আবার চেষ্টা করো।");
-    } finally {
-      setLoading(false);
-    }
+    setMessage(message);
+    toast.error(message);
+    return;
   }
 
+  toast.success("অ্যাকাউন্ট তৈরি হয়েছে!");
+  router.push("/signin");
+} catch {
+  const message = "সমস্যা হয়েছে। আবার চেষ্টা করো।";
+
+  setMessage(message);
+  toast.error(message);
+} finally {
+  setLoading(false);
+}
+  }
   return (
     <main className="flex min-h-[65vh] items-center justify-center bg-[#f0f5f0] px-4 py-12">
       <section className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
@@ -129,7 +138,11 @@ export default function SignupPage() {
             {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
           </button>
         </form>
+            <div className="my-4 text-center text-sm text-gray-500">
+  অথবা social account দিয়ে
+   </div>
 
+   <SocialLogin />
         <div className="my-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200" />
           <span className="text-xs text-gray-500">অথবা</span>
